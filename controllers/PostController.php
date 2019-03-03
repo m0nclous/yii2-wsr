@@ -26,6 +26,7 @@ class PostController extends ActiveController
         unset($actions['create']);
         unset($actions['update']);
         unset($actions['delete']);
+        unset($actions['index']);
 
         return $actions;
     }
@@ -96,5 +97,11 @@ class PostController extends ActiveController
         return [
             'message' => 'Post not found'
         ];
+    }
+
+    public function actionIndex()
+    {
+        Yii::$app->response->setStatusCode(200, 'List posts');
+        return Post::find()->all();
     }
 }
