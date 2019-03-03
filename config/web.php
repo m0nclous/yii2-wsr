@@ -59,7 +59,8 @@ $config = [
                         'DELETE {id}/comments/<comment_id:\\d[\\d,]*>' => 'delete-comment',
                         'GET tags/<tag:.*>' => 'search-by-tag',
                     ]
-                ]
+                ],
+                'POST api/auth' => 'post/auth',
             ],
         ],
 

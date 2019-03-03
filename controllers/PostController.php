@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Comment;
 use app\models\Tag;
+use app\models\User;
 use yii\rest\ActiveController;
 use app\models\Post;
 use Yii;
@@ -195,5 +196,32 @@ class PostController extends ActiveController
 
         Yii::$app->response->setStatusCode(200, 'Found posts');
         return $posts;
+    }
+
+    public function actionAuth()
+    {
+        $userForValidate = new User();
+        $data = Yii::$app->request->post();
+
+        if ($userForValidate->load($data, '')) {
+            if ($user = User::findOne([
+                'login' => $data['login'],
+                'password' => $data['password'],
+            ])) {
+                $user->generateToken();
+
+                Yii::$app->response->setStatusCode(200, 'Successful authorization');
+                return [
+                    'status' => true,
+                    'token' => $user->token,
+                ];
+            }
+        }
+
+        Yii::$app->response->setStatusCode(401, 'Invalid authorization data');
+        return [
+            'status' => false,
+            'message' => 'Invalid authorization data'
+        ];
     }
 }
