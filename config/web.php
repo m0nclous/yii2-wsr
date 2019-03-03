@@ -49,6 +49,13 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'post',
+                    'extraPatterns' => [
+                        'POST {id}' => 'update',
+                    ]
+                ]
             ],
         ],
 
