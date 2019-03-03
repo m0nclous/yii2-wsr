@@ -110,4 +110,11 @@ class Post extends \yii\db\ActiveRecord
 
         parent::afterSave($insert, $changedAttributes);
     }
+
+    public function afterDelete()
+    {
+        unlink($this->image_path);
+
+        parent::afterDelete();
+    }
 }

@@ -25,6 +25,7 @@ class PostController extends ActiveController
 
         unset($actions['create']);
         unset($actions['update']);
+        unset($actions['delete']);
 
         return $actions;
     }
@@ -69,6 +70,25 @@ class PostController extends ActiveController
             return [
                 'status' => false,
                 'message' => $post->firstErrors,
+            ];
+        }
+
+        Yii::$app->response->setStatusCode(404, 'Post not found');
+        return [
+            'message' => 'Post not found'
+        ];
+    }
+
+    public function actionDelete($id)
+    {
+        $post = Post::findOne($id);
+
+        if ($post) {
+            $post->delete();
+
+            Yii::$app->response->setStatusCode(201, 'Successful delete');
+            return [
+                'status' => true
             ];
         }
 
