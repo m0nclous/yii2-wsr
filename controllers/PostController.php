@@ -154,4 +154,30 @@ class PostController extends ActiveController
             'message' => 'Post not found'
         ];
     }
+
+    public function actionDeleteComment($id, $comment_id)
+    {
+        $post = Post::findOne($id);
+
+        if ($post) {
+            if($comment = Comment::findOne($comment_id)) {
+                $comment->delete();
+
+                Yii::$app->response->setStatusCode(201, 'Successful delete');
+                return [
+                    'status' => true,
+                ];
+            }
+
+            Yii::$app->response->setStatusCode(404, 'Comment not found');
+            return [
+                'message' => 'Comment not found',
+            ];
+        }
+
+        Yii::$app->response->setStatusCode(404, 'Post not found');
+        return [
+            'message' => 'Post not found'
+        ];
+    }
 }
