@@ -52,6 +52,7 @@ $config = [
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'post',
+                    'prefix' => 'api',
                     'extraPatterns' => [
                         'POST {id}' => 'update',
                         'POST {id}/comments' => 'add-comment',
