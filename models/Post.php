@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "post".
@@ -20,6 +21,8 @@ use Yii;
  */
 class Post extends \yii\db\ActiveRecord
 {
+    public $image;
+
     /**
      * {@inheritdoc}
      */
@@ -80,5 +83,12 @@ class Post extends \yii\db\ActiveRecord
     public function getTags()
     {
         return $this->hasMany(Tag::className(), ['id' => 'tag_id'])->viaTable('post_tag', ['post_id' => 'id']);
+    }
+
+    public function beforeValidate()
+    {
+        $this->image = UploadedFile::getInstanceByName('image');
+
+        return parent::beforeValidate();
     }
 }
