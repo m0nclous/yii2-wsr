@@ -91,4 +91,22 @@ class Post extends \yii\db\ActiveRecord
 
         return parent::beforeValidate();
     }
+
+    public function afterValidate()
+    {
+        if ($this->image) {
+            $this->image_path = 'post_images/' . uniqid() . '.' . $this->image->extension;
+        }
+
+        parent::afterValidate();
+    }
+
+    public function afterSave($insert, $changedAttributes) {
+        // Сохранение изображения
+        if ($this->image_path) {
+            $this->image->saveAs($this->image_path);
+        }
+
+        parent::afterSave($insert, $changedAttributes);
+    }
 }
