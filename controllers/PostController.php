@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Comment;
+use app\models\Tag;
 use yii\rest\ActiveController;
 use app\models\Post;
 use Yii;
@@ -179,5 +180,18 @@ class PostController extends ActiveController
         return [
             'message' => 'Post not found'
         ];
+    }
+
+    public function actionSearchByTag($tag)
+    {
+        $posts = [];
+        $tag = Tag::findOne(['name' => $tag]);
+
+        if ($tag) {
+            $posts = $tag->posts;
+        }
+
+        Yii::$app->response->setStatusCode(200, 'Found posts');
+        return $posts;
     }
 }

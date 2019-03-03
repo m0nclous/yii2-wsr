@@ -56,6 +56,7 @@ $config = [
                         'POST {id}' => 'update',
                         'POST {id}/comments' => 'add-comment',
                         'DELETE {id}/comments/<comment_id:\\d[\\d,]*>' => 'delete-comment',
+                        'GET tags/<tag:.*>' => 'search-by-tag',
                     ]
                 ]
             ],
