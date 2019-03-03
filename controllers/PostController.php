@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Comment;
 use yii\rest\ActiveController;
 use app\models\Post;
 use Yii;
@@ -113,6 +114,39 @@ class PostController extends ActiveController
         if ($post) {
             Yii::$app->response->setStatusCode(200, 'View post');
             return $post;
+        }
+
+        Yii::$app->response->setStatusCode(404, 'Post not found');
+        return [
+            'message' => 'Post not found'
+        ];
+    }
+
+    public function actionAddComment($id)
+    {
+        $post = Post::findOne($id);
+        $data = Yii::$app->request->post();
+
+        if ($post) {
+            $comment = new Comment();
+
+            if(!Yii::$app->user->isGuest) {
+                $data['author'] = 'admin';
+            }
+
+            $data['post_id'] = $post->id;
+            if($comment->load($data, '') && $comment->validate() && $comment->save()) {
+                Yii::$app->response->setStatusCode(201, 'Successful creation');
+                return [
+                    'status' => true,
+                ];
+            }
+
+            Yii::$app->response->setStatusCode(400, 'Creation error');
+            return [
+                'status' => false,
+                'message' => $comment->firstErrors,
+            ];
         }
 
         Yii::$app->response->setStatusCode(404, 'Post not found');

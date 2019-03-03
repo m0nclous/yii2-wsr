@@ -54,6 +54,7 @@ $config = [
                     'controller' => 'post',
                     'extraPatterns' => [
                         'POST {id}' => 'update',
+                        'POST {id}/comments' => 'add-comment',
                     ]
                 ]
             ],
