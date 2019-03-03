@@ -27,6 +27,7 @@ class PostController extends ActiveController
         unset($actions['update']);
         unset($actions['delete']);
         unset($actions['index']);
+        unset($actions['view']);
 
         return $actions;
     }
@@ -103,5 +104,20 @@ class PostController extends ActiveController
     {
         Yii::$app->response->setStatusCode(200, 'List posts');
         return Post::find()->all();
+    }
+
+    public function actionView($id)
+    {
+        $post = Post::findOne($id);
+
+        if ($post) {
+            Yii::$app->response->setStatusCode(200, 'View post');
+            return $post;
+        }
+
+        Yii::$app->response->setStatusCode(404, 'Post not found');
+        return [
+            'message' => 'Post not found'
+        ];
     }
 }
