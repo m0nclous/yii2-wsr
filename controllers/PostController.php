@@ -113,6 +113,8 @@ class PostController extends ActiveController
         $post = Post::findOne($id);
 
         if ($post) {
+            $post->scenario = 'with-comments';
+
             Yii::$app->response->setStatusCode(200, 'View post');
             return $post;
         }
