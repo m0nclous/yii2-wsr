@@ -22,6 +22,19 @@ class PostController extends ActiveController
         return $verbs;
     }
 
+    public function behaviors()
+    {
+        $beheviors = parent::behaviors();
+
+        $beheviors['bearerAuth'] = [
+            'class' => HttpBearerAuthHelper::className(),
+            'except' => ['auth', 'index', 'view', 'add-comment'],
+            'optional' => ['add-comment'],
+        ];
+
+        return $beheviors;
+    }
+
     public function actions()
     {
         $actions = parent::actions();
