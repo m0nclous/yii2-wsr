@@ -39,6 +39,7 @@ class Post extends \yii\db\ActiveRecord
             [['datatime'], 'safe'],
             [['title', 'image_path'], 'string', 'max' => 255],
             [['title'], 'unique'],
+            [['image'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg', 'maxSize' => 2 * 1024 * 1024]
         ];
     }
 
