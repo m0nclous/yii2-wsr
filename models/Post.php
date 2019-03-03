@@ -108,6 +108,30 @@ class Post extends \yii\db\ActiveRecord
             $this->image->saveAs($this->image_path);
         }
 
+        // Добавление тегов к посту
+        $data = Yii::$app->request->post();
+        if (isset($data['tags'])) {
+            PostTag::deleteAll([ 'post_id' => $this->id ]);
+
+            $tags = explode(',', $data['tags']);
+            if (is_array($tags)) {
+                foreach ($tags as $tag) {
+                    $tag = trim($tag);
+
+                    if (!$tagModel = Tag::findOne(['name' => $tag])) {
+                        $tagModel = new Tag();
+                        $tagModel->name = $tag;
+                        $tagModel->save();
+                    }
+
+                    $postTag = new PostTag();
+                    $postTag->post_id = $this->id;
+                    $postTag->tag_id = $tagModel->id;
+                    $postTag->save();
+                }
+            }
+        }
+
         parent::afterSave($insert, $changedAttributes);
     }
 
