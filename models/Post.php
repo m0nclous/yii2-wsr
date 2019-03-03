@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\web\UploadedFile;
 
 /**
@@ -22,6 +24,28 @@ use yii\web\UploadedFile;
 class Post extends \yii\db\ActiveRecord
 {
     public $image;
+
+    public function fields()
+    {
+        $fields = [
+            'title',
+            'datatime' => function($post) {
+                $time = strtotime($post->datatime);
+
+                return date('H:i d.m.Y', $time);
+            },
+            'anons',
+            'text',
+            'tags' => function($post) {
+                return ArrayHelper::getColumn($post->tags, 'name');
+            },
+            'image' => function($post) {
+                return Url::home(true) . $post->image_path;
+            },
+        ];
+
+        return $fields;
+    }
 
     /**
      * {@inheritdoc}
